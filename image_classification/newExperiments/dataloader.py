@@ -7,11 +7,14 @@ import os
 import json
 import numpy as np
 import random
+from utils import * 
 
-with open("../../period_to_label_mapping.json", 'r') as f:
+config_data = read_file("./configs/default.json") #TODO: find a way to pick this up from Experiment
+
+with open(config_data["period_to_label_mapping_path"], 'r') as f:
     period_to_label = json.load(f)
 
-with open("../../train_ids_class_wise.json", 'r') as f:
+with open(config_data["train_ids_class_wise_path"], 'r') as f:
     train_ids_class_wise = json.load(f)
     
     
@@ -52,6 +55,7 @@ class CuneiformDataset(Dataset):
         sample = {'image': image,
                   'label': label,
                   'period': period,
+                  'pid':pid,
                  }
         return sample
     
