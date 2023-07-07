@@ -10,13 +10,13 @@ from utils import *
 import datetime
 
 class Experiment(object):
-    def __init__(self, name):
+    def __init__(self, name, directory=None):
         config_data = read_file_in_dir("./configs", name + ".json")
         if config_data is None:
             raise Exception("Configuration file doesn't exist: ", name)
         
         self.__name = config_data["experiment_name"]
-        self.__experiment_dir = config_data["experiment_directory"]+"/"+ str(datetime.datetime.now())+"/"
+        self.__experiment_dir = directory if directory is not None else config_data["experiment_directory"]+"/"+ str(datetime.datetime.now())+"/"
         os.makedirs(self.__experiment_dir, exist_ok=True)
         self.__device = torch.device("cuda:"+str(config_data["gpu_number"]) if torch.cuda.is_available() else "cpu")
         self.__epochs = config_data["num_epochs"]
@@ -141,7 +141,7 @@ class Experiment(object):
 
         for epoch in range(self.__epochs):
             train_data_loader = self.__train_dataset_loaders[epoch%no_of_loaders]
-            train_dataset_size = len(train_dataset_loader)
+            train_dataset_size = len(train_data_loader)
 
             self.__log('Epoch {}/{}'.format(epoch + 1, self.__epochs))
             self.__log('-' * 100)
@@ -243,10 +243,8 @@ class Experiment(object):
         state_dict = {"model": model_dict, "optimizer": self.__optimizer.state_dict()}
         torch.save(state_dict, root_model_path)
         
-    def __load_experiment(self, model_name):
-        state_dict = torch.load(
-            os.path.join(self.__experiment_dir, model_name)
-        )
+    def load_experiment(self, model_path):
+        state_dict = torch.load(model_path)
         self.__model.load_state_dict(state_dict["model"])
         self.__optimizer.load_state_dict(state_dict["optimizer"])
         
@@ -256,7 +254,7 @@ class Experiment(object):
         if file_name is not None:
             log_to_file_in_dir(self.__experiment_dir, file_name, log_str)
             
-    def __savePredictions(self,predictions, val):
+    def __savePredictions(self, predictions, val):
         filename = "val_predictions.json" if val else "test_predictions.json"
         with open(os.path.join(self.__experiment_dir, filename), 'w') as f:
             json.dump(predictions,f)

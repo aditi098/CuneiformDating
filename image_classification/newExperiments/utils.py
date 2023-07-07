@@ -1,5 +1,8 @@
 import os 
 import json
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 def read_file(path):
     if os.path.isfile(path):
@@ -34,3 +37,14 @@ def write_to_file(path, data):
 def write_to_file_in_dir(root_dir, file_name, data):
     path = os.path.join(root_dir, file_name)
     write_to_file(path, data)
+
+            
+def analyze_predictions(filename):
+    with open(filename, 'r') as f:
+        predictions = json.load(f)
+    true_labels = predictions["true labels"]
+    pred_labels = predictions["predicted labels"]
+    cf_matrix =confusion_matrix(true_labels, pred_labels)
+    print("printing confusion matrix")
+    sns.heatmap(cf_matrix, annot=True)
+    plt.show()
