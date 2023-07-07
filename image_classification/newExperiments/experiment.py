@@ -18,6 +18,7 @@ class Experiment(object):
         self.__name = config_data["experiment_name"]
         self.__experiment_dir = directory if directory is not None else config_data["experiment_directory"]+"/"+ str(datetime.datetime.now())+"/"
         os.makedirs(self.__experiment_dir, exist_ok=True)
+        print("Created directory", self.__experiment_dir)
         self.__device = torch.device("cuda:"+str(config_data["gpu_number"]) if torch.cuda.is_available() else "cpu")
         self.__epochs = config_data["num_epochs"]
         self.__catalogue_csv_path = config_data["catalogue_csv_path"]
