@@ -1,0 +1,10 @@
+image_classification/__MACOSX/
+*.pyc
+*-checkpoint.ipynb
+image_classification/oldExperiments/oldDataResNetModel.pth
+image_classification/newExperiments/.ipynb_checkpoints/
+image_classification/newExperiments/results/
+data_split/sample_imgs_to_check.json
+data_split/sample_imgs_to_check.txt
+image_classification/segmentation/jupyter_notebooks/.ipynb_checkpoints
+image_classification/segmentation/jupyter_notebooks/__pycache__
