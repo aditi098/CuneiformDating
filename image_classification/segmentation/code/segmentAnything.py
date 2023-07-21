@@ -63,7 +63,7 @@ for pid in tqdm.tqdm(all_ids):
         width = image.shape[1]
         height = image.shape[0]
 
-        if not image_anno[pid]["RGB"]: #if non RGB image, no segmentation
+        if not ("RGB" in image_anno[pid].keys() and image_anno[pid]["RGB"]): #if non RGB image, no segmentation
             cv2.imwrite("/trunk/shared/cuneiform/full_data/segmented_images/"+image_name, image)
             continue
             
