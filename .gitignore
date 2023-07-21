@@ -8,3 +8,4 @@ data_split/sample_imgs_to_check.json
 data_split/sample_imgs_to_check.txt
 image_classification/segmentation/jupyter_notebooks/.ipynb_checkpoints
 image_classification/segmentation/jupyter_notebooks/__pycache__
+image_classification/segmentation/sam_vit_h_4b8939.pth
